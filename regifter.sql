@@ -15,40 +15,88 @@ CREATE DATABASE regifter;
 -- giver - string
 -- value - integer
 -- previously_regifted boolean
+regifter=# CREATE TABLE gfits ( id serial PRIMARY KEY, gift TEXT, giver TEXT, value INT, previously_regfited BOOLEAN);
+CREATE TABLE
+regifter=# 
+
 
 
 -- 
 \echo See details of the table you created
 -- 
 
-
+regifter=# \d
+            List of relations
+ Schema |     Name     |   Type   | Owner 
+--------+--------------+----------+-------
+ public | gfits        | table    | randy
+ public | gfits_id_seq | sequence | randy
+(2 rows)
 -- 
 \echo Alter the table so that the column price is changed to value 
 -- 
 
-
 -- 
 \echo Insert a peach candle, given by 'Santa' thats value is 9 and has been previously regifted
 -- 
-
+regifter=# INSERT INTO gfits( gift, giver, value, previously_regfited)Values('Peach candle', 'Santa','9',true);
+INSERT 0 1
 
 --
 \echo Query for all the columns in your gifts table
 -- 
+regifter=# \d gfits;
+                                   Table "public.gfits"
+       Column        |  Type   | Collation | Nullable |              Default              
+---------------------+---------+-----------+----------+-----------------------------------
+ id                  | integer |           | not null | nextval('gfits_id_seq'::regclass)
+ gift                | text    |           |          | 
+ giver               | text    |           |          | 
+ value               | integer |           |          | 
+ previously_regfited | boolean |           |          | 
+Indexes:
+    "gfits_pkey" PRIMARY KEY, btree (id)
+
 
 
 --
 \echo Uncomment below to insert 5 more gifts
 -- 
 
--- INSERT INTO gifts (gift, giver, value, previously_regifted)
--- VALUES
--- ('peach candle', 'Santa', '9', TRUE),
--- ('cinnamon candle', 'Nick', '19', TRUE),
--- ('soap on a rope', 'Rudolf', '29', FALSE),
--- ('potpurri', 'Elf on the Shelf', '39', TRUE),
--- ('mango candle', 'The Boss', '49', FALSE)
--- ;
+ INSERT INTO gifts (gift, giver, value, previously_regifted)
+VALUES
+('peach candle', 'Santa', '9', TRUE), 
+ ('cinnamon candle', 'Nick', '19', TRUE),
+ ('soap on a rope', 'Rudolf', '29', FALSE),
+ ('potpurri', 'Elf on the Shelf', '39', TRUE),
+ ('mango candle', 'The Boss', '49', FALSE)
+ ;
+ regifter=#  INSERT INTO gifts (gift, giver, value, previously_regifted)
+regifter-# VALUES
+regifter-# ('peach candle', 'Santa', '9', TRUE), 
+regifter-#  ('cinnamon candle', 'Nick', '19', TRUE),
+regifter-#  ('soap on a rope', 'Rudolf', '29', FALSE),
+regifter-#  ('potpurri', 'Elf on the Shelf', '39', TRUE),
+regifter-#  ('mango candle', 'The Boss', '49', FALSE)
+regifter-#  ;
+ERROR:  relation "gifts" does not exist
+LINE 1: INSERT INTO gifts (gift, giver, value, previously_regifted)
+                    ^
+regifter=#  INSERT INTO gifts (gift, giver, value, previously_regifted)
+regifter-# VALUES
+regifter-# ('peach candle', 'Santa', '9', TRUE), 
+regifter-#  ('cinnamon candle', 'Nick', '19', TRUE),
+regifter-#  ('soap on a rope', 'Rudolf', '29', FALSE),
+regifter-#  ('potpurri', 'Elf on the Shelf', '39', TRUE),
+regifter-#  INSERT INTO gfits (gift, giver, value, previously_regifted)                                       VALUES                                                                                                        ('peach candle', 'Santa', '9', TRUE),                                                                          ('cinnamon candle', 'Nick', '19', TRUE),                                                                      ('soap on a rope', 'Rudolf', '29', FALSE),                                                                    ('potpurri', 'Elf on the Shelf', '39', TRUE),                                                                 ('mango candle', 'The Boss', '49', FALSE)                                                                     ;
+ERROR:  syntax error at or near "INSERT"
+LINE 7:  INSERT INTO gfits (gift, giver, value, previously_regifted)
+         ^
+regifter=#  INSERT INTO gifts (gift, giver, value, previously_regifted)                                       VALUES                                                                                                        ('peach candle', 'Santa', '9', TRUE),                                                                          ('cinnamon candle', 'Nick', '19', TRUE),                                                                      ('soap on a rope', 'Rudolf', '29', FALSE),                                                                    ('potpurri', 'Elf on the Shelf', '39', TRUE),                                                                 INSERT INTO gfits (gift, giver, value, previously_regifted)                                                  VALUES                                                                                                        ('peach candle', 'Santa', '9', TRUE), ('cinnamon candle', 'Nick', '19', TRUE),                                 ('soap on a rope', 'Rudolf', '29', FALSE),                                                                    ('potpurri', 'Elf on the Shelf', '39', TRUE),                                                                 ('mango candle', 'The Boss', '49', FALSE);                                                                   ERROR:  syntax error at or near "INSERT"
+LINE 7:  INSERT INTO gfits (gift, giver, value, previously_regifted)
+         ^
+regifter=# 
+
 
 -- 
 \echo Insert 5 more gifts of your own choosing,  include 1 more candle
